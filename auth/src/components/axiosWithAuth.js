@@ -1,12 +1,13 @@
 import Axios from 'axios';
 
 export const AxiosWithAuth = () => {
-    const token  = localStorage.getItem('token');
+    const token = localStorage.getItem('token');
 
     return Axios.create({
-        headers:{
+        baseURL: "http://localhost:5000/api",
+        headers: {
             'Content-type': 'application/json',
-            'Authorizations': token
-        },
+            'Authorization': token
+        }
     })
 }

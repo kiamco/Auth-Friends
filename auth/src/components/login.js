@@ -1,24 +1,32 @@
 import React, { useState, useEffect } from 'react';
-
+import {AxiosWithAuth} from './axiosWithAuth';
 
 const Login = props => {
     const [loginInfo, setLoginInfo] = useState({
-        login: '',
+        username: '',
         password: ''
     }
     );
 
 
     const onChange = (event) => {
-        setLoginInfo({ [event.target.name]: event.target.value });
+        setLoginInfo({...loginInfo,[event.target.name]: event.target.value });
     }
 
-    const handleSubmit = () => {
-
+    const handleSubmit = (event) => {
+        console.log(loginInfo);
+        event.preventDefault();
+        AxiosWithAuth()
+        .post('/login',loginInfo)
+        .then(res => {
+            localStorage.setItem('token', res.data.payload);
+            props.history.push('friendsList');
+        })
+        .catch(err => console.log(err));
     }
 
     return (
-        <form>
+        <form onSubmit={handleSubmit}> 
             <label for="username"><b>Username</b></label>
             <input
                 type="text"
